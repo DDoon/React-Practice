@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import AddUser from './components/Users/AddUser'
 import UserList from './components/Users/UserList'
 
 function App() {
   const [userList, setUserList] = useState([])
 
+  const dataId = useRef(0)
+
   const addUserHandler = (uName, uAge) => {
-    setUserList((prevUserList) => {
-      return [
-        ...prevUserList,
-        { name: uName, age: uAge, id: Math.random().toString() },
-      ]
-    })
+    const newItem = {
+      name: uName,
+      age: uAge,
+      id: dataId.current,
+    }
+    dataId.current += 1
+    setUserList([newItem, ...userList])
   }
 
   return (

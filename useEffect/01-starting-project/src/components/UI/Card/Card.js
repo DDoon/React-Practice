@@ -1,11 +1,19 @@
-import React from 'react';
+import React from 'react'
+import styled from 'styled-components'
 
-import classes from './Card.module.css';
+const CardStyle = styled.div`
+  width: 90%;
+  max-width: 40rem;
+  margin: 2rem auto;
+  padding: 2rem;
+
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 10px;
+`
 
 const Card = (props) => {
-  return (
-    <div className={`${classes.card} ${props.className}`}>{props.children}</div>
-  );
-};
+  return <CardStyle>{props.children}</CardStyle>
+}
 
-export default Card;
+export default Card

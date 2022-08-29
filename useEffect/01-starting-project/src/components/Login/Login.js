@@ -1,53 +1,96 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import Card from '../UI/Card/Card';
-import classes from './Login.module.css';
-import Button from '../UI/Button/Button';
+import Card from '../UI/Card/Card'
+import Button from '../UI/Button/Button'
+import styled from 'styled-components'
 
+const LoginStyle = styled.div`
+  margin: 1rem 0;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+
+  label,
+  input {
+    display: block;
+  }
+
+  label {
+    font-weight: bold;
+    flex: 1;
+    color: #464646;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    flex: 3;
+    font: inherit;
+    padding: 0.35rem 0.35rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #4f005f;
+    background: #f6dbfc;
+  }
+
+  .invalid input {
+    border-color: red;
+    background: #fbdada;
+  }
+
+  .actions {
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .control {
+      align-items: center;
+      flex-direction: row;
+    }
+  }
+`
 const Login = (props) => {
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [emailIsValid, setEmailIsValid] = useState();
-  const [enteredPassword, setEnteredPassword] = useState('');
-  const [passwordIsValid, setPasswordIsValid] = useState();
-  const [formIsValid, setFormIsValid] = useState(false);
+  const [enteredEmail, setEnteredEmail] = useState('')
+
+  const [emailIsValid, setEmailIsValid] = useState()
+  const [enteredPassword, setEnteredPassword] = useState('')
+  const [passwordIsValid, setPasswordIsValid] = useState()
+  const [formIsValid, setFormIsValid] = useState(false)
+
+  useEffect(() => {
+    setFormIsValid(
+      enteredEmail.includes('@') && enteredPassword.trim().length > 6
+    )
+  }, [enteredEmail, enteredPassword])
 
   const emailChangeHandler = (event) => {
-    setEnteredEmail(event.target.value);
-
-    setFormIsValid(
-      event.target.value.includes('@') && enteredPassword.trim().length > 6
-    );
-  };
+    setEnteredEmail(event.target.value)
+  }
 
   const passwordChangeHandler = (event) => {
-    setEnteredPassword(event.target.value);
-
-    setFormIsValid(
-      event.target.value.trim().length > 6 && enteredEmail.includes('@')
-    );
-  };
+    setEnteredPassword(event.target.value)
+  }
 
   const validateEmailHandler = () => {
-    setEmailIsValid(enteredEmail.includes('@'));
-  };
+    setEmailIsValid(enteredEmail.includes('@'))
+  }
 
   const validatePasswordHandler = () => {
-    setPasswordIsValid(enteredPassword.trim().length > 6);
-  };
+    setPasswordIsValid(enteredPassword.trim().length > 6)
+  }
 
   const submitHandler = (event) => {
-    event.preventDefault();
-    props.onLogin(enteredEmail, enteredPassword);
-  };
+    event.preventDefault()
+    props.onLogin(enteredEmail, enteredPassword)
+  }
 
   return (
-    <Card className={classes.login}>
+    <Card>
       <form onSubmit={submitHandler}>
-        <div
-          className={`${classes.control} ${
-            emailIsValid === false ? classes.invalid : ''
-          }`}
-        >
+        <LoginStyle>
           <label htmlFor="email">E-Mail</label>
           <input
             type="email"
@@ -56,12 +99,8 @@ const Login = (props) => {
             onChange={emailChangeHandler}
             onBlur={validateEmailHandler}
           />
-        </div>
-        <div
-          className={`${classes.control} ${
-            passwordIsValid === false ? classes.invalid : ''
-          }`}
-        >
+        </LoginStyle>
+        <Login>
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -70,15 +109,13 @@ const Login = (props) => {
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
           />
-        </div>
-        <div className={classes.actions}>
-          <Button type="submit" className={classes.btn} disabled={!formIsValid}>
-            Login
-          </Button>
+        </Login>
+        <div>
+          <Button type="submit">Login</Button>
         </div>
       </form>
     </Card>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

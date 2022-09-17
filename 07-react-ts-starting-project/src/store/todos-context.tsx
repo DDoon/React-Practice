@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import Todo from '../models/todo'
 
-type TodosContextObj = {
+interface TodosContextObj {
   items: Todo[]
   addTodo: (text: string) => void
   removeTodo: (id: string) => void
